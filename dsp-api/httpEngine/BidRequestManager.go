@@ -3,6 +3,7 @@ package httpEngine
 import (
 	"compress/gzip"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 
@@ -68,7 +69,7 @@ func waitForWinner(reqCtx impl.RequestContext) *impl.BidResponse {
 	}
 }
 
-func BidRequest(req *gnethttp.Request) *gnethttp.Response {
+func BidRequestOverseasSsp(req *gnethttp.Request) *gnethttp.Response {
 
 	var bidReq impl.BidRequest
 	if err := json.Unmarshal(req.Body, &bidReq); err != nil {
@@ -76,7 +77,7 @@ func BidRequest(req *gnethttp.Request) *gnethttp.Response {
 		return gnethttp.BadRequest("invalid json body")
 	}
 
-	//fmt.Printf("bidRequest json decode: %v\n", bidReq)
+	fmt.Printf("bidRequest json decode: %v\n", bidReq)
 	res := impl.BidRequestHandleDirect(bidReq)
 	// 使用 bidReq...
 	return gnethttp.JSON(res)

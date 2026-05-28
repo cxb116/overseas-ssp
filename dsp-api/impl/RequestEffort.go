@@ -2,8 +2,6 @@ package impl
 
 import (
 	"context"
-	"sync"
-	"time"
 
 	"github.com/cxb116/DSP/constant"
 )
@@ -22,7 +20,7 @@ func RequestCheckLevel1(bidRequest BidRequest) BidResponse {
 	return BidResponse{Res: 1}
 }
 
-func RequestCheckLevel2(bidRequest BidRequest, handler *KfHandler) BidResponse {
+func RequestCheckLevel2(bidRequest BidRequest) BidResponse {
 
 	return BidResponse{Res: 1}
 }
@@ -34,24 +32,26 @@ func BidRequestHandleDirect(bidRequest BidRequest) BidResponse {
 	}
 
 	// 通过请求获取配置预算数据
-	kfHandler := DspSlotGlobalData.MatchBudgetHandler(&bidRequest)
-	if kfHandler == nil {
+	ContextLoopDspEventMap := DspSlotGlobalData.MatchBudgetHandler(&bidRequest)
+	if ContextLoopDspEventMap == nil {
+		return BidResponse{Res: -1}
+	}
+
+	if ContextLoopDspEventMap == nil {
 		return BidResponse{Res: -1}
 	}
 
 	// 第二次校验
-	level2 := RequestCheckLevel2(bidRequest, kfHandler)
-	if level2.Res < 0 {
-		return BidResponse{Res: -1}
-	}
+	//level2 := RequestCheckLevel2(bidReques)
+	//if level2.Res < 0 {
+	//	return BidResponse{Res: -1}
+	//}
+	//
+	//reqContext := GetRequestContext()
+	//defer PutRequestContext(reqContext)
+	//reqContext.BidRequest = &bidRequest
+	//response := ExchangeHandlers(reqContext)
 
-	reqContext := GetRequestContext()
-	defer PutRequestContext(reqContext)
-	reqContext.KfHandler = kfHandler
-	reqContext.BidRequest = &bidRequest
-	response := ExchangeHandlers(reqContext)
-
-	return response
 	//return BidResponse{Res: 0}
 
 	//reqContext.BidRequest = &bidRequest
@@ -62,57 +62,56 @@ func BidRequestHandleDirect(bidRequest BidRequest) BidResponse {
 
 	//waitForWinner(reqContext)
 	//return BidResponse{Res: 0}
+	return BidResponse{}
 }
 
 func ExchangeHandlers(reqCtx *RequestContext) BidResponse {
-	if len(reqCtx.KfHandler.DspSlotIds) == 0 {
-		return BidResponse{Res: -1}
-	}
+	//if len(reqCtx.KfHandler.DspSlotIds) == 0 {
+	//	return BidResponse{Res: -1}
+	//}
 
-	ctx, cancel := context.WithTimeout(reqCtx.Context, 99660*time.Millisecond)
-	defer cancel()
+	//ctx, cancel := context.WithTimeout(reqCtx.Context, 99660*time.Millisecond)
+	//defer cancel()
 
-	var wg sync.WaitGroup
-	var mu sync.Mutex
-	results := make([]CountHandler, 0, len(reqCtx.KfHandler.DspSlotIds))
+	//results := make([]CountHandler, 0, len(reqCtx.KfHandler.DspSlotIds))
+	//
+	//for _, dsp := range reqCtx.KfHandler.DspSlotIds {
+	//	wg.Add(1)
+	//	go func(dsp int64) {
+	//		defer wg.Done()
+	//		defer func() {
+	//			if r := recover(); r != nil {
+	//			}
+	//		}()
+	//
+	//		if !acquireDSPToken(ctx, globalDSPLimiter) {
+	//			return
+	//		}
+	//		defer releaseDSPToken(globalDSPLimiter)
+	//
+	//		dspSlotInfo := GetDspSlotInfo(dsp)
+	//		if dspSlotInfo != nil {
+	//			resp := DspDispatchDocumentManager(ctx, *dspSlotInfo, reqCtx)
+	//			mu.Lock()
+	//			results = append(results, CountHandler{BidResponse: resp})
+	//			mu.Unlock()
+	//		}
+	//	}(dsp)
+	//}
+	//
+	//done := make(chan struct{})
+	//go func() {
+	//	wg.Wait()
+	//	close(done)
+	//}()
+	//
+	//select {
+	//case <-done:
+	//case <-ctx.Done():
+	//	cancel() // 取消 context，让未开始的 goroutine 快速退出
+	//}
 
-	for _, dsp := range reqCtx.KfHandler.DspSlotIds {
-		wg.Add(1)
-		go func(dsp int64) {
-			defer wg.Done()
-			defer func() {
-				if r := recover(); r != nil {
-				}
-			}()
-
-			if !acquireDSPToken(ctx, globalDSPLimiter) {
-				return
-			}
-			defer releaseDSPToken(globalDSPLimiter)
-
-			dspSlotInfo := GetDspSlotInfo(dsp)
-			if dspSlotInfo != nil {
-				resp := DspDispatchDocumentManager(ctx, *dspSlotInfo, reqCtx)
-				mu.Lock()
-				results = append(results, CountHandler{BidResponse: resp})
-				mu.Unlock()
-			}
-		}(dsp)
-	}
-
-	done := make(chan struct{})
-	go func() {
-		wg.Wait()
-		close(done)
-	}()
-
-	select {
-	case <-done:
-	case <-ctx.Done():
-		cancel() // 取消 context，让未开始的 goroutine 快速退出
-	}
-
-	return pickBest(results)
+	return BidResponse{}
 }
 
 type CountHandler struct {

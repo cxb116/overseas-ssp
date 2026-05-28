@@ -52,6 +52,13 @@ type LoopDspEventMaps struct {
 	RwMutex         sync.RWMutex
 }
 
+// 传输对象的结构体
+type ContextLoopDspEventMaps struct {
+	DspSlotInfoMaps map[int64]*DspSlotInfo // key = dspSlotInfo的id
+	SspSlotInfo     *SspSlotInfo
+	DspLaunchMaps   map[int64]*DspLaunch //  key = dspLaunch 的id
+}
+
 func (this *LoopDspEventMaps) RegLoopSubscribeMessage(ctx context.Context) {
 
 	this.AllDbData()
@@ -265,7 +272,6 @@ func (this *LoopDspEventMaps) DspSlotInfoWatchChan(ctx context.Context) {
 		logger.Log.Warn().Msgf("log")
 	}
 
-	logger.Log.Info().Msgf("log")
 	logger.Log.Info().Msgf("log %v", global.EngineConfig.Etcd)
 	logger.Log.Info().Msgf("log %v", prefix)
 
@@ -273,9 +279,6 @@ func (this *LoopDspEventMaps) DspSlotInfoWatchChan(ctx context.Context) {
 	logger.Log.Info().Msgf("log %v", watchPrefix)
 
 	watchChan := global.EngineETCD.Watch(ctx, watchPrefix, clientv3.WithPrefix())
-
-	logger.Log.Info().Msgf("log")
-	logger.Log.Info().Msgf("========================================")
 
 	eventCount := 0
 
@@ -357,12 +360,10 @@ func (this *LoopDspEventMaps) handleEtcdPut(dataType, idStr string, event *clien
 func (this *LoopDspEventMaps) handleEtcdDelete(dataType, idStr string) {
 	id := parseInt64(idStr)
 
-	logger.Log.Info().Msgf("log")
 	logger.Log.Info().Msgf("log %v %v", dataType, id)
 
 	switch dataType {
 	case "dsp":
-		logger.Log.Info().Msgf("log %v", id)
 		DeleteDspSlotInfo(id)
 		logger.Log.Info().Msg("done")
 	case "company":
@@ -431,27 +432,25 @@ func parseInt64(s string) int64 {
 	return id
 }
 
-type KfHandler struct {
-	SspSlotId  int64
-	DspSlotIds []int64
-}
-
-func (this *LoopDspEventMaps) MatchBudgetHandler(request *BidRequest) *KfHandler {
-	// 使用 this 而不是全局变量，避免锁嵌套
+func (this *LoopDspEventMaps) MatchBudgetHandler(request *BidRequest) *ContextLoopDspEventMaps {
+	// 持有读锁期间一次性获取所有需要的数据，避免重复加锁
 	this.RwMutex.RLock()
-	defer this.RwMutex.RUnlock()
 
-	// 直接访问 this.DspLaunchMaps，避免重复获取锁
+	// 1. 获取匹配的 dspLaunchs
 	dspLaunchs := make([]*DspLaunch, 0)
 	for _, launch := range this.DspLaunchMaps {
 		if launch.SspSlotId == request.SlotId {
-			dspLaunchs = append(dspLaunchs, launch)
+			// 创建副本，避免直接使用指针导致的数据竞争
+			launchCopy := *launch
+			dspLaunchs = append(dspLaunchs, &launchCopy)
 		}
 	}
 
 	if len(dspLaunchs) == 0 {
+		this.RwMutex.RUnlock()
 		return nil
 	}
+
 	// 创建一个 权重搜集器，将流量分配到这个容器中
 	launchSnapshot := make([]DspLaunch, 0, len(dspLaunchs))
 	// 权重值
@@ -475,21 +474,63 @@ func (this *LoopDspEventMaps) MatchBudgetHandler(request *BidRequest) *KfHandler
 
 	index, sspSlotId := returnDspSlotIdWeightDropOut(weightCandidates)
 	if sspSlotId == 0 {
-		logger.ErrorLog.Warn().Msgf("Weight selection failed, SspSlotId=%d", request.SlotId)
+		this.RwMutex.RUnlock()
+		logger.ErrorLog.Warn().Msgf("请检查ETCD,同步数据。权重匹配异常, SspSlotId=%d", request.SlotId)
 		return nil
 	}
-	var DspSlotIds []int64
-	// 直接使用已获取的 dspLaunchs，避免重复查询
-	for _, dspLaunchOn := range dspLaunchs {
-		if dspLaunchOn.Indexs == index {
-			DspSlotIds = append(DspSlotIds, dspLaunchOn.DspSlotId)
-		}
+
+	//  因为是1组数据所以长度是1
+	ctxLoopDspEvents := &ContextLoopDspEventMaps{
+		DspSlotInfoMaps: make(map[int64]*DspSlotInfo),
+		DspLaunchMaps:   make(map[int64]*DspLaunch),
+		SspSlotInfo:     nil,
 	}
 
-	return &KfHandler{
-		SspSlotId:  sspSlotId,
-		DspSlotIds: DspSlotIds,
+	// 直接使用已获取的 dspLaunchs 副本
+	for _, dspLaunchOn := range dspLaunchs {
+		// index 是判断是否是同一组流量，例如：流量1下面有3个预算，则这三个流量的index是相同的
+		if dspLaunchOn.Indexs == index {
+			launchCopy := *dspLaunchOn
+			ctxLoopDspEvents.DspLaunchMaps[dspLaunchOn.Id] = &launchCopy
+		}
+	} //dspLaunch 搜集完毕
+
+	if len(ctxLoopDspEvents.DspLaunchMaps) == 0 {
+		this.RwMutex.RUnlock()
+		return nil
 	}
+
+	// sspSlotInfo 赋值 - 在同一个读锁下获取，避免重复加锁
+	sspSlotInfo := this.SspSlotInfoMaps[request.SlotId]
+	if sspSlotInfo == nil {
+		this.RwMutex.RUnlock()
+		return nil
+	}
+
+	// 创建副本
+	sspSlotInfoCopy := *sspSlotInfo
+	ctxLoopDspEvents.SspSlotInfo = &sspSlotInfoCopy
+
+	// dspSlotInfo 赋值 - 在同一个读锁下获取
+	for _, dspLaunch := range ctxLoopDspEvents.DspLaunchMaps {
+		if dspLaunch.DspSlotId <= 0 {
+			this.RwMutex.RUnlock()
+			logger.ErrorLog.Info().Msgf("请检查ETCD,同步数据异常,同步数据匹配异常，dspLaunch.DspSlotId <= 0")
+			return nil
+		}
+		dspSlotInfo := this.DspSlotInfoMaps[dspLaunch.DspSlotId]
+		if dspSlotInfo == nil {
+			this.RwMutex.RUnlock()
+			logger.ErrorLog.Info().Msgf("请检查ETCD,同步数据异常,同步数据匹配异常，无法匹配到正常数据")
+			return nil
+		}
+		// 创建副本
+		dspSlotInfoCopy := *dspSlotInfo
+		ctxLoopDspEvents.DspSlotInfoMaps[dspSlotInfo.Id] = &dspSlotInfoCopy
+	}
+
+	this.RwMutex.RUnlock()
+	return ctxLoopDspEvents
 }
 
 func returnDspSlotIdWeightDropOut(dspLaunchArr []DspLaunch) (int, int64) {

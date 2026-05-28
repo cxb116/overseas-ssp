@@ -2,7 +2,6 @@ package httpEngine
 
 import (
 	"context"
-	"net/http"
 	_ "net/http/pprof"
 
 	"github.com/cxb116/DSP/document"
@@ -99,13 +98,19 @@ func GnetEngine() {
 	//	}
 	//}()
 
-	router.POST("/api/adx/v2", func(req *gnethttp.Request) *gnethttp.Response {
-		return BidRequest(req)
+	router.POST("/api/ssp/v2", func(req *gnethttp.Request) *gnethttp.Response {
+		return BidRequestOverseasSsp(req)
+	})
+	// 健康检查
+	router.POST("/api/ssp/v2/healthy", func(req *gnethttp.Request) *gnethttp.Response {
+		return healthy(req)
 	})
 
 	gnethttp.ListenAndServe(":6666", router)
 }
 
-func healthy(w http.ResponseWriter, req *http.Request) {
-	w.Write([]byte("200"))
+func healthy(req *gnethttp.Request) *gnethttp.Response {
+	return &gnethttp.Response{
+		Code: 200,
+	}
 }

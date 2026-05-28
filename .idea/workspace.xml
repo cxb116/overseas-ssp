@@ -1,4 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PropertiesComponent">{}</component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="ALL" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ee9032e8-7667-4821-801e-f3a8811663c6" name="更改" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dsp-api/gnethttp/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/dsp-api/gnethttp/server.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dsp-api/httpEngine/BidRequestManager.go" beforeDir="false" afterPath="$PROJECT_DIR$/dsp-api/httpEngine/BidRequestManager.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dsp-api/httpEngine/Engine.go" beforeDir="false" afterPath="$PROJECT_DIR$/dsp-api/httpEngine/Engine.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dsp-api/httpEngine/RequestTimingMiddleware.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dsp-api/httpEngine/bid_request_manager_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dsp-api/impl/BidRequest.go" beforeDir="false" afterPath="$PROJECT_DIR$/dsp-api/impl/BidRequest.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dsp-api/impl/BidResponse.go" beforeDir="false" afterPath="$PROJECT_DIR$/dsp-api/impl/BidResponse.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dsp-api/impl/LoopSubscribeMessage.go" beforeDir="false" afterPath="$PROJECT_DIR$/dsp-api/impl/LoopSubscribeMessage.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dsp-api/impl/RequestContext.go" beforeDir="false" afterPath="$PROJECT_DIR$/dsp-api/impl/RequestContext.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dsp-api/impl/RequestEffort.go" beforeDir="false" afterPath="$PROJECT_DIR$/dsp-api/impl/RequestEffort.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dsp-api/impl/request_handler_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dsp-api/impl/rtb_bid_request.go" beforeDir="false" afterPath="$PROJECT_DIR$/dsp-api/impl/rtb_bid_request.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dsp-api/impl/rtb_bid_response.go" beforeDir="false" afterPath="$PROJECT_DIR$/dsp-api/impl/rtb_bid_response.go" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
+  </component>
+  <component name="GOROOT" url="file://C:/Program Files/Go" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 7
+}]]></component>
+  <component name="ProjectId" id="3EL6OYSn6OncZdqrvWH9lBz88eg" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultGoTemplateProperty": "Go File",
+    "Go 构建.go build github.com/cxb116/DSP.executor": "Debug",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.go.analysis.ui.options.defaults": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "git-widget-placeholder": "main",
+    "go.sdk.automatically.set": "true",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "D:/code/goHistory/over/overseas-ssp"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="go build github.com/cxb116/DSP" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="overseas-ssp" />
+      <working_directory value="$PROJECT_DIR$/dsp-api" />
+      <kind value="PACKAGE" />
+      <package value="github.com/cxb116/DSP" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/dsp-api/main.go" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go 构建.go build github.com/cxb116/DSP" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-gosdk-72a9cf600ed8-dfa3e7267ae0-org.jetbrains.plugins.go.sharedIndexes.bundled-GO-253.31033.129" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-GO-253.31033.129" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="ee9032e8-7667-4821-801e-f3a8811663c6" name="更改" comment="" />
+      <created>1779945471013</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1779945471013</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/dsp-api/impl/RequestEffort.go</url>
+          <line>34</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
 </project>

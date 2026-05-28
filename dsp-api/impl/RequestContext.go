@@ -13,9 +13,9 @@ var requestContextPool = sync.Pool{
 }
 
 type RequestContext struct {
-	BidRequest        *BidRequest
-	BidResponse       *BidResponse
-	KfHandler         *KfHandler           // 绑定数据统计
+	BidRequest  *BidRequest
+	BidResponse *BidResponse
+	// 绑定数据统计
 	DspRequestMetrics []*DspRequestMetrics // 统计kafka 请求次数
 	Timeout           time.Duration
 
@@ -51,7 +51,6 @@ func PutRequestContext(ctx *RequestContext) {
 
 	ctx.BidRequest = nil
 	ctx.BidResponse = nil
-	ctx.KfHandler = nil
 	ctx.DspRequestMetrics = nil
 	ctx.Context = nil
 	ctx.Cancel = nil

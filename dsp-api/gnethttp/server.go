@@ -52,6 +52,7 @@ func (r *Router) GET(path string, handler HTTPHandler) {
 func (r *Router) POST(path string, handler HTTPHandler) {
 	r.HandleFunc("POST", path, handler)
 }
+
 //
 //// PUT 注册 PUT 请求处理函数
 //func (r *Router) PUT(path string, handler HTTPHandler) {
@@ -119,20 +120,20 @@ func (r *Request) JSON(v interface{}) error {
 
 // Response HTTP 响应
 type Response struct {
-	StatusCode int
-	Headers    map[string]string
-	Body       []byte
+	Code    int
+	Headers map[string]string
+	Body    []byte
 }
 
 // NewResponse 创建新的响应
 func NewResponse(statusCode int) *Response {
 	return &Response{
-		StatusCode: statusCode,
+		Code: statusCode,
 		Headers: map[string]string{
-			"Content-Type":   "text/plain; charset=utf-8",
-			"Connection":     "close",
-			"Server":         "GNet-HTTP/1.0",
-			"X-Powered-By":   "gnethttp",
+			"Content-Type": "text/plain; charset=utf-8",
+			"Connection":   "close",
+			"Server":       "GNet-HTTP/1.0",
+			"X-Powered-By": "gnethttp",
 		},
 	}
 }
@@ -205,7 +206,7 @@ func Unauthorized(message string) *Response {
 func NotFound(message ...string) *Response {
 	resp := NewResponse(404)
 	resp.SetHeader("Content-Type", "application/json; charset=utf-8")
-	msg := "Not Found"
+	msg := "Not Found,Please contact operations. "
 	if len(message) > 0 {
 		msg = message[0]
 	}
@@ -250,7 +251,7 @@ func (r *Response) toBytes() []byte {
 	var buf bytes.Buffer
 
 	// 状态行
-	buf.WriteString(fmt.Sprintf("HTTP/1.1 %d %s\r\n", r.StatusCode, getStatusText(r.StatusCode)))
+	buf.WriteString(fmt.Sprintf("HTTP/1.1 %d %s\r\n", r.Code, getStatusText(r.Code)))
 
 	// 响应头
 	for key, value := range r.Headers {
@@ -298,10 +299,10 @@ func getStatusText(code int) string {
 // Server HTTP 服务器
 type Server struct {
 	gnet.BuiltinEventEngine
-	router      *Router
-	addr        string
-	middleware  []HTTPHandler
-	staticDir   string
+	router     *Router
+	addr       string
+	middleware []HTTPHandler
+	staticDir  string
 }
 
 // ServerOption 服务器配置选项
