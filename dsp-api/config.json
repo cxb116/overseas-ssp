@@ -1,0 +1,70 @@
+{
+  "version": "1.0.0",
+  "port": ":6666",
+  "requestLink": 1300000000,
+  "dspRequest": 1000000000,
+  "ims_link": "&ts=__TS__&tts=__TS_S__&win_price=__WIN_PRICE__",
+  "clk_link": "&ts=__TS__",
+  "priceEncrypt": "b0b133a49843e5946b1979e685370d7a8bafbd0d1a102dcaf9ed1352dd72d280",
+  "workerSize": 5000,
+  "taskQueue": 5000,
+  "etcd": "117.72.67.186:2379",
+  "etcdPrefix": "/dsp/config",
+  "redis": {
+    "cluster": {
+      "addrs": [
+        "127.0.0.1:6379"
+      ],
+      "username": "root",
+      "password": "",
+      "pool_size": 200,
+      "dial_timeout": 3000000000,
+      "read_timeout": 2000000000,
+      "write_timeout": 2000000000
+    }
+  },
+  "database": {
+    "host": "117.72.67.186",
+    "port": "3306",
+    "username": "root",
+    "password": "Chen@666",
+    "dbname": "dsp-admin",
+    "max_idle_conns": 50,
+    "max_open_conns": 200
+  },
+  "kafka": {
+    "brokers": [
+      "117.72.67.186:9092"
+    ],
+    "frequency": 500000000,
+    "messages": 1000,
+    "returnSuccess": false,
+    "topicReqData": "req",
+    "topicResData": "res"
+  },
+
+  "log": {
+    "logLevel": "debug",
+    "logConsole": "stdout",
+    "logDir": "/dir_log/",
+    "businessLogDir": "./logs/business",
+    "errorLogDir": "./logs/error",
+    "logMaxSize": 0,
+    "logMaxBackup": 0,
+    "logEncodingMode": "console",
+    "logNoCaller": true,
+    "logTimestamp": true,
+    "logAsync": false,
+    "errorStackTrace": false,
+    "logConsoleColor": false,
+    "openCheat": false,
+    "logUtcTime": false,
+    "logRetentionDays": 5
+  },
+
+  "ims": "http://127.0.0.1:9991/ims?info=ims&",
+  "cls": "http://127.0.0.1:9991/cls?info=cls&",
+  "down": "http://127.0.0.1:9991/down?info=down&",
+  "ins": "http://127.0.0.1:9991/ins?info=ins&",
+  "act": "http://127.0.0.1:9991/act?info=act&"
+}

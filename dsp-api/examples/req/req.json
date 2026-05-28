@@ -1,0 +1,100 @@
+{
+  "id": "req-20260107-0001",
+  "imp": {
+    "id": 1,
+    "w": 1080,
+    "h": 1920,
+    "ad_type": 2,
+    "position": 1,
+    "bid_floor": 500
+  },
+  "app": {
+    "app_id": "app_987654321",
+    "name": "示例资讯App",
+    "bundle": "com.example.news",
+    "ver": "5.3.1"
+  },
+  "device": {
+    "ip": "123.125.68.45",
+    "ua": "Mozilla/5.0 (Linux; Android 12; Mi 10 Build/SKQ1.211006.001)",
+    "os": 1,
+    "osv": "12",
+    "geo": {
+      "lat": 39.9042,
+      "lon": 116.4074,
+      "ctype": 1
+    },
+    "device_type": 0,
+    "network": {
+      "net_type": 5,
+      "carrier": 1,
+      "imsi": "460001",
+      "mac": "02:00:00:00:00:00",
+      "mac_md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "ssid": "ChinaNet-5G",
+      "wifi_mac": "02:00:00:00:00:00"
+    },
+    "model": "Mi 10",
+    "model_code": "M2001J2E",
+    "brand": "Xiaomi",
+    "orientation": 1,
+    "w": 1080,
+    "h": 2340,
+    "dpi": 440,
+    "ppi": 401,
+    "screen_size": 6.67,
+    "serial_no": "ABC123456789",
+    "androidId": "9774d56d682e549c",
+    "androidId_md5": "e10adc3949ba59abbe56e057f20f883e",
+    "imei": "867530912345678",
+    "oaid": "7f3b2c1d-1234-5678-9abc-abcdef123456",
+    "api_level": "31",
+    "paid": "0",
+    "idfa": "",
+    "idfa_md5": "",
+    "idfv": "",
+    "idfv_md5": "",
+    "openUdid": "",
+    "caids": [
+      {
+        "id": "",
+        "ver": ""
+      }
+    ],
+    "device_name": "Xiaomi Mi 10",
+    "language": "zh-CN",
+    "country": "CN",
+    "rom_ver": "MIUI 14.0.5",
+    "sysComplingTime": "1704500000000",
+    "bootTimeNano": "1234567890123",
+    "updateTimeNano": "1704501000000",
+    "sysInitTime": "1704499000000",
+    "disk_size": 256000,
+    "memory_size": 8192,
+    "battery_status": 2,
+    "battery_power": 85,
+    "cpu_num": 8,
+    "miuiv": "V14",
+    "time_zone": "Asia/Shanghai",
+    "lmt": 0,
+    "boot_mark": "boot_001",
+    "update_mark": "update_202601",
+    "app_store_version": "8.3.0",
+    "hms_version": "6.12.0",
+    "installed_app": [
+      "com.tencent.mm",
+      "com.taobao.taobao",
+      "com.ss.android.article.news"
+    ]
+  },
+  "ver": "1",
+  "support_dp": 1,
+  "support_wx": 1,
+  "user": {
+    "uid": "user_123456789",
+    "age": 28,
+    "gender": 1
+  },
+  "https": true
+}
+

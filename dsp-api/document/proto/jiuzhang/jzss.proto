@@ -1,0 +1,358 @@
+syntax = "proto3";
+
+package jiuzhang;
+
+option go_package = "./;jiuzhang";
+
+// protoc --csharp_out=../Features/Rtb/ --csharp_opt=file_extension=.g.cs jzss.proto
+// 请求体
+message BidRequest {
+
+  // 媒体的唯一请求ID
+  string id = 1;
+  // 本API版本号，例如：1.0.0
+  string ver = 2;
+  // 广告位信息
+  Imp imp = 3;
+  // APP信息
+  App app = 4;
+  // 设备信息
+  Device device = 5;
+  // 用户信息
+  User user = 6;
+
+  //备用 扩展字段
+  //map<string, string> ext = 7;
+
+  message Imp {
+    //广告位ID（联系平台运营人员获取）
+    string id = 1;
+    //广告位宽
+    int32 w = 2;
+    //广告位高
+    int32 h = 3;
+    //广告类型，1：信息流；2：开屏，3：横幅；4：插屏；5：激励视频；
+    int32 type = 4;
+    //竞价底价，单位: 千次展现/分
+    int32 flr = 5;
+
+  }
+
+  message App {
+    //APP名称
+    string name = 1;
+    //APP包名
+    string bundle = 2;
+    //APP版本号
+    string version = 3;
+
+  }
+
+  message User {
+    //用户ID
+    string id = 1;
+    //用户性别，0：未知，1：男性，2：女性；
+    int32 gender = 2;
+    //用户年龄
+    int32 age = 3;
+    //用户画像关键词列表，以逗号分隔
+    string keywords = 4;
+
+  }
+
+  message Device {
+    //设备IP
+    string ip = 1;
+    //设备IPV6
+    string ipv6 = 2;
+    //设备User-Agent
+    string ua = 3;
+    //设备OS类型，1：Android，2：IOS
+    int32 os = 4;
+    //设备系统版本号，需与UA中的系统版本号一致，例如：8.0.0
+    string osv = 5;
+    //设备类型，0：未知，1：手机，2：平板，3：智能电视；
+    int32 deviceType = 6;
+    //设备经纬度信息
+    Geo geo = 7;
+    //设备网络信息
+    Network network = 8;
+    //设备厂商，例如：Apple、HUAWEI
+    string brand = 9;
+    //设备型号，IOS：Hardware(硬件字符串，例如：iPhone15,2)
+    string model = 10;
+    //设备型号码，IOS必传(例如：DF12A);
+    string modelCode = 11;
+    //设备屏幕方向，1：竖屏，2：横屏；
+    int32 orientation = 12;
+    //设备屏幕(分辨率)宽，例如：1080
+    int32 w = 13;
+    //设备屏幕(分辨率)高，例如：1920
+    int32 h = 14;
+    //设备屏幕像素密度，例如：2.5
+    double dpi = 15;
+    //设备屏幕每英寸像素点数，例如：460
+    int32 ppi = 16;
+    //设备屏幕尺寸，例如：4.7、5.5英寸
+    double screenSize = 17;
+    //设备序列号 Build.SERIAL
+    string serialno = 18;
+    //Android 设备 ID，Android必传
+    string androidId = 19;
+    //Android 设备 ID MD5值
+    string androidIdMd5 = 20;
+    //Android 设备 imei，Android 10 以下必传
+    string imei = 21;
+    //Android 设备 imei MD5值
+    string imeiMd5 = 22;
+    //ndroid 设备 oaid，Android 10 以上必传
+    string oaid = 23;
+    //Android 设备 oaid MD5值
+    string oaidMd5 = 24;
+    //droid 设备系统版本，IOS 设备无需此参数
+    string apiLevel = 25;
+    //拼多多PAID，PAID = MD5(设备初始化时间) + "-" + MD5(系统更新时间) + "-" + MD5(系统启动时间)
+    string paid = 26;
+    //IOS 设备 idfa，IOS 14 以下必传
+    string idfa = 27;
+    //IOS 设备 idfa MD5值
+    string idfaMd5 = 28;
+    //IOS 设备 idfv，IOS必传
+    string idfv = 29;
+    //IOS 设备 idfv MD5值
+    string idfvMd5 = 30;
+    //IOS 设备 软件生成替代 UDID 的标识
+    string openUdid = 31;
+    // IOS caid List，14以上必传，新老版本都要传；
+    repeated Caid caids = 32;
+    //设备名称(IOS必传，IOS无法获取时，传deviceNameMd5)；
+    string deviceName = 33;
+    //设备名称 MD5值
+    string deviceNameMd5 = 34;
+    //设备语言，IOS必传，例如：zh-Hans-CN；
+    string language = 35;
+    //设备国家，IOS必传，例如：CN；
+    string country = 36;
+    //设备ROM版本
+    string romVer = 37;
+    //系统编译时间
+    string sysComplingTime = 38;
+    //系统启动时间，精确到纳秒， 格式：1754632473.958204976，纳秒为9位
+    string bootTimeNano = 39;
+    //系统更新时间，精确到纳秒， 格式：1754632473.958204976，纳秒为9位
+    string updateTimeNano = 40;
+    //设备初始化时间，例如：1754632473.958204976
+    string sysInitTime = 41;
+    //设备磁盘大小，单位：byte，例如：1099511627776；
+    sint64 diskSize = 42;
+    //设备内存大小，单位：byte，例如：8589934592；
+    sint64 memorySize = 43;
+    //电池充电状态，0：未知，1：不充电，2：充电，3：满电；
+    int32 batteryStatus = 44;
+    //电池电量百分比，例如：70
+    int32 batteryPower = 45;
+    //设备CPU个数，例如：8
+    int32 cpuNumber = 46;
+    //设备所处时区，例如：28800；
+    string timeZone = 48;
+    //设备是否允许获取IDFA，0：未确定，1：受限制，2：被拒绝，3：授权；
+    int32 lmt = 49;
+    //系统启动标识，例如：
+    //IOS：1623815045.970028，
+    //Android：ec7f4f33-411a-47bc-8067-744a4e7e0723；
+    string bootMark = 51;
+    //系统更新标识，例如：
+    //iOS：1581141691.570419583，
+    //Android：1004697.709999999；
+    string updateMark = 52;
+    //设备应用商店版本，VIVO、OPPO、HUAWEI必传；
+    string appStoreVersion = 53;
+    //HUAWEI 设备的 HMSCore 版本号
+    string hmsVersion = 54;
+    //设备已安装的APP包名列表
+    repeated string InstalledApps = 56;
+
+    message Caid {
+      //caid ios14替代idfa，例如：pd7e3kf7d1641daa3a940cc364j7wi9f
+      string id = 1;
+      // caid 版本，iOS14 以上必填，例如：20230303
+      string ver = 2;
+      // caid供应商, 0:热云, 1:信通院, 2:阿里因子AAID
+      int32 vendor = 3;
+    }
+
+    message Geo {
+      //纬度
+      double lat = 1;
+      //经度
+      double lon = 2;
+      //坐标类型，1：GPS/定位，2：IP地址；
+      int32 type = 3;
+      //国家，例如：CN
+      string country = 4;
+      //省份
+      string province = 5;
+      //城市
+      string city = 6;
+    }
+
+    message Network {
+      //网络类型：0：未知，1：Wifi，2：2G，3：3G，4：4G，5：5G；
+      int32 conType = 1;
+      //网络运营商：0：未知，1：中国移动，2：中国联通，3：中国电信；，4：中国铁通；
+      int32 carrier = 2;
+      //IMSI(SIM 卡串号)，获取不到完整的值，请获取前五位，IMSI前五位是 mcc + mnc（不需要权限获取）
+      string imsi = 3;
+      //MAC 地址，例如：66:61:d5:44:56:e6
+      string mac = 6;
+      //MAC MD5值，无法获取MAC地址时，可以传MD5值；
+      string macMd5 = 7;
+      //无线网SSID名称
+      string ssid = 8;
+      //wifiMac
+      string wifiMac = 9;
+    }
+
+  }
+
+}
+
+// 请求响应
+message BidResponse {
+  //媒体请求时的唯一ID
+  string id = 1;
+
+  //0 正常参竟 其余值为放弃参竟
+  int32 nbr = 2;
+
+  //广告内容信息，无广告返回时此对象为空
+  Bid bid = 3;
+
+  //备用 扩展字段
+  //map<string, string> ext = 4;
+
+  message Bid {
+    //竞价唯一ID
+    string id = 1;
+    //广告位ID
+    string slotId = 2;
+    //广告的类型，1：图文，2：视频；
+    int32 creativeType = 3;
+    //广告的交互类型，1：打开网页(包含deeplink)，2:直接下载应用
+    int32 interactionType = 4;
+    //广告标题
+    string title = 5;
+    //广告描述
+    string desc = 6;
+    //广告图标icon链接
+    string iconUrl = 7;
+    //广告图片链接，单个广告可能多个图片地址
+    repeated string imgUrls = 8;
+    //广告素材图片宽度
+    int32 w = 9;
+    //广告素材图片高度
+    int32 h = 10;
+    //落地页链接，若 interactionType=2 时，该字段值可能为下载地址，与 downloadUrl 相同；
+    string targetUrl = 11;
+    //deeplink链接，该参数有值时，请优先处理，若无值，则处理 targetUrl
+    string deeplink = 12;
+    //iOS系统 deeplink链接，优先级高于deeplink；
+    string universalLink = 13;
+    //广告来源
+    string source = 14; 
+
+    //竞价成功上报地址，需要替换url里边包含的宏
+    repeated string nurl = 15;
+    //竞价失败上报地址，需要替换url里边包含的宏
+    repeated string lurl = 16;
+
+    //曝光事件上报地址，需要替换url里边包含的宏
+    repeated string impUrls = 17;
+    //点击事件上报地址，需要替换url里边包含的宏
+    repeated string clickUrls = 18;
+    //Deeplink尝试唤醒上报地址，需要替换url里边包含的宏
+    repeated string dpTryUrls = 19;
+    //Deeplink唤醒成功上报地址，需要替换url里边包含的宏
+    repeated string dpSuccessUrls = 20;
+    //Deeplink唤醒失败上报地址，需要替换url里边包含的宏
+    repeated string dpFailUrls = 21;
+
+    //微信开发者APPID
+    string wechatAppId = 22;
+    //微信小程序原始ID
+    string wechatOriginId = 23;
+    //微信拉起小程序页面的可带参数路径；
+    string wechatPath = 24;
+
+
+    //竞价广告出价，单位: 千次展现/分
+    int32 price = 25;
+
+    //APP应用下载信息
+    App app = 26;
+    //视频广告素材
+    Video video = 27;
+
+    message App {
+      //APP应用下载链接
+      string downloadUrl = 1;
+      //应用名称
+      string name = 2;
+      //应用包名
+      string bundle = 3;
+      //应用版本号
+      string version = 4;
+      //应用包大小，单位：kb
+      int32 size = 5;
+      //应用开发者
+      string developer = 6;
+      //应用隐私说明链接
+      string privacyUrl = 7;
+      //应用权限链接
+      string permissionUrl = 8;
+      //应用功能说明链接
+      string functionDescUrl = 9;
+
+      //下载开始事件上报地址，需要替换url里边包含的宏
+      repeated string startDownloadUrls = 10;
+      //下载成功事件上报地址，需要替换url里边包含的宏
+      repeated string successDownloadUrls = 11;
+      //安装开始事件上报地址，需要替换url里边包含的宏
+      repeated string installStartUrls = 12;
+      //安装成功事件上报地址，需要替换url里边包含的宏
+      repeated string installSuccessUrls = 13;
+      //激活成功事件上报地址，需要替换url里边包含的宏
+      repeated string activeSuccessUrls = 14;
+
+    }
+
+    message Video {
+      //视频地址URL
+      string url = 1;
+      //视频时长，单位：秒
+      int32 duration = 2;
+      //视频体积，单位：byte
+      sint64 size = 3;
+      //视频宽度
+      int32 w = 4;
+      //视频高度
+      int32 h = 5;
+      //视频封面图链接
+      string coverUrl = 6;
+
+      //视频广告开始播放事件上报地址，需要替换url里边包含的宏
+      repeated string startUrls = 7;
+      //视频广告播放25%事件上报地址，需要替换url里边包含的宏
+      repeated string fourthUrls = 8;
+      //视频广告播放50%事件上报地址，需要替换url里边包含的宏
+      repeated string halfUrls = 9;
+      //视频广告播放75%事件上报地址，需要替换url里边包含的宏
+      repeated string thdUrls = 10;
+      //视频广告播放完成事件上报地址，需要替换url里边包含的宏
+      repeated string endUrls = 11;
+
+    }
+
+  }
+
+}

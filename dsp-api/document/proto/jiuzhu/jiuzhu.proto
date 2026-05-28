@@ -1,0 +1,148 @@
+syntax = "proto3";
+package jiuzhu;
+
+option go_package = "./;jiuzhu";
+
+message JZRequest {
+  string id = 1;
+  string ver = 2;
+  string ad_id = 3;
+  int32 ad_width = 4;
+  int32 ad_height = 5;
+  string app_name = 6;
+  string pkg_name = 7;
+  string apv = 8;
+  string make = 9;
+  string brand = 10;
+  string model = 11;
+  double density = 12;
+  int32 os = 13;
+  string os_ver = 14;
+  int32 api_level = 15;
+  int32 dev_width = 16;
+  int32 dev_height = 17;
+  int32 dev_orient = 18;
+  string appstore_ver = 19;
+  string hmscore = 20;
+  string ui_ver = 21;
+  int32 dev_type = 22;
+  int32 carrier = 23;
+  string operator_nop = 24;
+  int32 net_type = 25;
+  string imsi = 26;
+  string mac = 27;
+  int32 bid_price = 28;
+  string imei = 29;
+  string imei_md5 = 30;
+  string android_id = 31;
+  string oaid = 32;
+  string user_agent = 33;
+  string idfa = 34;
+  string idfa_md5 = 35;
+  string idfv = 36;
+  string caid = 37;
+  string caid_ver = 38;
+  string udid = 39;
+  string ip = 40;
+  string ipv6 = 41;
+  int32 ppi = 42;
+  string lon = 43;
+  string lat = 44;
+  string boot_mark = 45;
+  string update_mark = 46;
+  string serialno = 47;
+  string rom_ver = 48;
+  string sys_compiling_time = 49;
+  string dev_name_md5 = 50;
+  string startup_time = 51;
+  string upgrade_time = 52;
+  string sys_start_up_nano_time = 53;
+  string sys_update_nano_time = 54;
+  string dev_init_nano_time = 55;
+  string timezone = 56;
+  string hardware_model = 57;
+  int64 memory = 58;
+  int64 hard_disk = 59;
+  int32 cpu_num = 60;
+  double cpu_freq = 61;
+  int32 idfa_policy = 62;
+  int32 battery_status = 63;
+  int32 battery_power = 64;
+  string dev_file_time = 65;
+  string country_code = 66;
+  string language = 67;
+  string paid = 68;
+  repeated string pkgs = 69;
+  repeated Caid caids = 70;
+  message Caid {
+    string caid_version = 1;
+    string caid = 2;
+  }
+}
+
+message JZResult {
+  int32 code = 1;
+  string message = 2;
+  repeated BidResult data = 3;
+  message BidResult {
+    string clk_url = 1;
+    string dp_url = 2;
+    int32 dp_ad = 3;
+    int32 mt = 4;
+    repeated string imgs = 5;
+    int32 width = 6;
+    int32 height = 7;
+    string title = 8;
+    string atx = 9;
+    string pack = 10;
+    string appname = 11;
+    string bt_txt = 12;
+    int32 act = 13;
+    int32 bid_price = 14;
+    repeated string show_trace = 15;
+    repeated string clk_trace = 16;
+    repeated string dp_try_trace = 17;
+    repeated string dp_suc_trace = 18;
+    repeated string dp_fail_trace = 19;
+    repeated string down_trace = 20;
+    repeated string downed_trace = 21;
+    repeated string ins_trace = 22;
+    repeated string insed_trace = 23;
+    repeated string ac_trace = 24;
+    repeated string notice_trace = 25;
+    Video video = 26;
+    string wx_path = 27;
+    string wx_id = 28;
+  }
+  message Video {
+    string url = 1;               // 视频播放地址
+    int32 duration = 2;           // 视频总时长(秒)
+    string format = 3;            // 视频格式(mp4/flv等)
+    string cover_image = 4;       // 视频封面图URL
+    int32 cover_width = 5;        // 封面图宽度
+    int32 cover_height = 6;       // 封面图高度
+    int32 end_frame_type = 7;     // 0:图片 1:HTML
+    string end_frame_url = 8;     // 尾帧内容URL
+    int32 end_frame_duration = 9; // 尾帧展示时长(秒)
+
+    // 广告应用信息
+    string app_name = 10;         // 推广的应用名称
+    string package_name = 11;     // 应用包名(Android)
+    string app_logo = 12;         // 应用图标URL
+
+    // 交互控制
+    int32 skip_time = 13;         // 可跳过时间(秒)-1表示不可跳过
+    bool allow_mute = 14;         // 是否允许静音
+    bool allow_fullscreen = 15;   // 是否允许全屏
+
+    // 监测事件
+    repeated TrackingEvent tracking_events = 16;//所有监测事件
+  }
+
+  // TrackingEvent 消息定义
+  message TrackingEvent {
+    int32 event_type = 1;         // 事件类型
+    repeated string track_urls = 2; // 监测URL列表
+  }
+
+}
